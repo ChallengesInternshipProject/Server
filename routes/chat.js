@@ -1,8 +1,10 @@
 var express = require('express');
 var router = express.Router();
-var io = require('socket.io')(80);
+var io = require('socket.io')(process.env.PORT | 1337);
 var Message = require('../models/message');
 var UserList = require('../models/userList');
+
+
 
 io.on('connection', function (socket) {
     var addedUser = false;
