@@ -1,0 +1,23 @@
+extends layout
+
+block content
+  h1= title
+  p Register New user to #{title}
+
+  form(action='/auth/register' method='post')
+    table
+      tr
+        td
+          input(type='text' placeholder='Username' name='email')
+      tr
+        td
+          input(type='text' placeholder='FirstName' name='firstName')
+      tr
+        td
+          input(type='text' placeholder='Last Name' name='lastName')
+      tr
+        td
+          input(type='password' placeholder='Password' name='password')
+      tr
+        td
+          button(type='submit') Login

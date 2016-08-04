@@ -1,0 +1,17 @@
+extends layout
+
+block content
+  h1= title
+  p Welcome to #{title}
+
+  form(action='/auth/login' method='post')
+    table
+      tr
+        td
+          input(type='text' placeholder='Username' name='email')
+      tr
+        td
+          input(type='password' placeholder='Password' name='password')
+      tr
+        td
+          button(type='submit') Login
