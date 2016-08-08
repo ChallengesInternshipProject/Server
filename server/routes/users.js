@@ -56,7 +56,6 @@ router.get('/friends/:user/:status', function(req, res, next){
 	User.getFriends(req.params.user,  searchParams, function(err,friends){
 		return res.json(friends);
 	})
-	
 
 })
 module.exports = router;
