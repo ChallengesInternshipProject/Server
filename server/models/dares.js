@@ -32,7 +32,8 @@ var dareSchema = new Schema({
     pictures:{type:Array, default:['images/feedCat.jpg','images/feedCat2.jpg']},//TODO - create files upload 
     comments:{type:Number,default:100}, //TODO use differente collection
     city:{type:String,default:'Sofia'},
-
+    category : {type:Number, default:0},
+    
     //TODO limits maximum and minimum lenght of strings
 });
 

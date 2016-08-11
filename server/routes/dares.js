@@ -66,26 +66,9 @@ router.get('/clear', function (req, res, next) {
 });
 
 router.post('/create', function (req, res, next) {
-
-	var title = req.param('name');
-	var description = req.param('description');
-	var friends = req.param('friends');
-	var location = req.param('location');
-
-	var currentChallenge = new Challenge({
-		title: title,
-		description: description,
-		location: {
-			lat: location.lat,
-			lng: location.lng
-		},
-		_creator: req.param('_creator'),
-		invitedUsers: friends
-
-	});
-
-	currentChallenge.save(function (err, challenge) {
-		res.send('saved');
+	var dare = new Dare(req.body);
+	dare.save(function (err, challenge) {
+		res.json(challenge);
 	});
 
 });

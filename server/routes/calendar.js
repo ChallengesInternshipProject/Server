@@ -1,7 +1,7 @@
 "use strict";
 var express = require('express');
 var router = express.Router();
-var Challenge = require('../models/challenges');
+var Dare = require('../models/dares');
 var moment = require('moment');
 moment.locale('bg')
 
@@ -91,7 +91,7 @@ router.get('/:userID/:year/:month',function(req,res,next){
 		req.params.year,
 		req.params.month
 	);
-	Challenge
+	Dare
 	.find({
 		_creator:req.params.userID,
 		title : {$ne:null},
@@ -126,7 +126,7 @@ router.get("/events/:userID/:year/:month/:day",function(req,res,next){
 	let from= currentDate.format();
 	let to = currentDate.add(1,'d').format();
 
-	Challenge
+	Dare
 	.find({
 		title : {$ne:null},
 		startDate:{
