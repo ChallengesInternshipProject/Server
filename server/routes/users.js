@@ -18,6 +18,7 @@ var bcrypt = require('bcrypt-nodejs');
 // /* GET users listing. */
 // var hash = bcrypt.hashSync("wtf");
 // console.log(hash);
+
 //END OF TESTING PURPOSES
 router.get('/', function (req, res, next) {
 	User.find(function (err, users) {

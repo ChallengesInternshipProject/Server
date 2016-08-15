@@ -30,9 +30,10 @@ router.get('/login', function (req, res, next) {
                 success: false
             });
         }
+        // delete user.password;
+        user.password = null;
         return res.json({
-            id: user._id,
-            email: email,
+            data: user,
             success: true
         });
     });
