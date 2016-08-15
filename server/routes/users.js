@@ -25,6 +25,25 @@ router.get('/', function (req, res, next) {
 		res.json(users)
 	});
 });
+router.get("/list/",function(req,res,next){
+	// var firends = []
+	// for (friend in friends)  {
+	// 	console.log(friend)
+	// }
+	var queryParams = {
+		friends : {
+			$nin : req.query.friends
+		}
+	}
+	console.log(queryParams)
+	User.find(queryParams,function(err,users){
+
+		if (err) { return next(err);};
+		console.log(users)
+		res.json(typeof req.query);
+	})
+})
+
 
 router.get('/:user', function (req, res, next) {
 
@@ -59,4 +78,6 @@ router.get('/friends/:user/:status', function(req, res, next){
 	})
 
 })
+
+
 module.exports = router;

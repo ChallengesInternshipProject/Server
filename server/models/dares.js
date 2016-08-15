@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var moment = require('moment');
 var Schema = mongoose.Schema;
-var challengeSchema = new Schema({
+var dareSchema = new Schema({
     //The id can be a number or a string
     // id: String,
     title: String,
@@ -32,10 +32,11 @@ var challengeSchema = new Schema({
     pictures:{type:Array, default:['images/feedCat.jpg','images/feedCat2.jpg']},//TODO - create files upload 
     comments:{type:Number,default:100}, //TODO use differente collection
     city:{type:String,default:'Sofia'},
-
+    category : {type:Number, default:0},
+    
     //TODO limits maximum and minimum lenght of strings
 });
 
-var Challenge = mongoose.model('Challenge', challengeSchema);
+var Dare = mongoose.model('Dare', dareSchema);
 
-module.exports = Challenge;
+module.exports = Dare;
