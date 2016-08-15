@@ -1,0 +1,12 @@
+extends layout
+
+block content
+  h1= title
+  p Welcome to #{title}
+  if user
+    Hello #{user.email} 
+    a(href="/auth/logout") logout
+  else
+    p #[span Please] #[a(href="/auth") Login] #[span or else !]
+
+  p  #[span Check out the local ]#[a(href="/users") Users]
