@@ -28,28 +28,16 @@ function createTestChallenge(userID,date){
 	newChallenge.save();
 }
 
-router.get('/timeline/:userID', function(req, res, next) {
+router.get('/list/', function(req, res, next) {
 	//TODO add pagination and hide the user password from the json !!! possible exploit
 	Dare
-	.find({
-		title : {$ne : null},
-		description : { $ne : null},
-		// startDate :{
-		//  $lt : new moment().format()
-		// },
-		// endDate : {
-		//  $gt : new moment().format()
-		// }
-	})
+	.find(JSON.parse(req.query.data))
 	.populate('_creator')
 	.exec(function (err, post) {
 		if (err) return next(err);
 		post = CalculateTimes(post);
 		res.json(post)
 	});
-
-	
-	
 });
 
 

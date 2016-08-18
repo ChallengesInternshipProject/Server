@@ -26,21 +26,21 @@ router.get('/', function (req, res, next) {
 	});
 });
 router.get("/list/",function(req,res,next){
-	// var firends = []
-	// for (friend in friends)  {
-	// 	console.log(friend)
-	// }
-	var queryParams = {
-		friends : {
-			$nin : req.query.friends
-		}
-	}
-	console.log(queryParams)
-	User.find(queryParams,function(err,users){
+	var ObjectID = require('mongoose').Types.ObjectId;
 
+	var queryParams = {};
+	req.query.friends.forEach(function(val,key){
+		if (!queryParams["_id"]) {
+			queryParams["_id"] = {
+				"$nin" : []
+			}
+		}
+		queryParams["_id"]["$nin"].push(new ObjectID(val));
+	})
+
+	User.find(queryParams,function(err,users){
 		if (err) { return next(err);};
-		console.log(users)
-		res.json(typeof req.query);
+		res.json(users);
 	})
 })
 
@@ -77,6 +77,11 @@ router.get('/friends/:user/:status', function(req, res, next){
 		return res.json(friends);
 	})
 
+})
+
+router.post('/requestFriendship/',function(req,res,next){
+	User.requestFriend(req.body.senderID,req.body.requestedID);
+	return res.json("done")
 })
 
 
