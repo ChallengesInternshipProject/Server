@@ -32,6 +32,7 @@ router.get('/list/', function(req, res, next) {
 	//TODO add pagination and hide the user password from the json !!! possible exploit
 	Dare
 	.find(JSON.parse(req.query.data))
+	.sort({endDate : -1})
 	.populate('_creator')
 	.exec(function (err, post) {
 		if (err) return next(err);
@@ -42,8 +43,8 @@ router.get('/list/', function(req, res, next) {
 
 
 router.get('/', function (req, res, next) {
-  Dare.find(function (err, challenge) {
-		res.json(challenge);
+  Dare.find(function (err, dare) {
+		res.json(dare);
 	});
 });
 
@@ -55,8 +56,8 @@ router.get('/clear', function (req, res, next) {
 
 router.post('/create', function (req, res, next) {
 	var dare = new Dare(req.body);
-	dare.save(function (err, challenge) {
-		res.json(challenge);
+	dare.save(function (err, dare) {
+		res.json(dare);
 	});
 
 });
