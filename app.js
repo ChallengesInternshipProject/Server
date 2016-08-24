@@ -3,7 +3,7 @@ var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
+// var bodyParser = require('body-parser');
 
 //Allow remote servers to get
 var cors = require('cors');
@@ -49,19 +49,19 @@ app.set('view engine', 'jade');
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(cors());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({
-    extended: true
-}));
-app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(require('express-session')({
     secret: 'keyboard cat',
     resave: false,
     saveUninitialized: false
 }));
+app.use(cookieParser());
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(express.static(path.join(__dirname, 'public')));
+
+var bodyParser = require('body-parser');
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 
 app.use('/', routes);
 app.use('/users', users);

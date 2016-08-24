@@ -3,7 +3,8 @@ var mongoose = require('mongoose');
 var router = express.Router();
 var Dare = require('../models/dares');
 var moment = require('moment')
-moment.locale('bg')
+moment.locale('bg');
+var $q = require('q');
 
 function CalculateTimes(challenges){
 	var result =[];
@@ -56,9 +57,10 @@ router.get('/clear', function (req, res, next) {
 
 router.post('/create', function (req, res, next) {
 	var dare = new Dare(req.body);
-	dare.save(function (err, dare) {
-		res.json(dare);
-	});
+	console.log(req.body);
+	// dare.save(function (err, dare) {
+	// 	res.json(dare);
+	// });
 
 });
 
