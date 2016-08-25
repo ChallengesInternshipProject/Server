@@ -2,6 +2,8 @@ var express = require('express');
 var mongoose = require('mongoose');
 var router = express.Router();
 var Dare = require('../models/dares');
+var Notification = require('../models/notifications');
+
 var moment = require('moment')
 moment.locale('bg');
 var $q = require('q');
@@ -66,6 +68,19 @@ router.post('/create', function (req, res, next) {
 	
 	//Save the files 
 	newDare.promise.then(function(result){
+		//Create Notifications for Invited Users 
+		
+		for(var i = 0; i < result.invitedUsers.length; i ++) {
+			Notification({
+				receiver :result.invitedUsers[i],
+				sender:result._creator,
+				refObject:'dare',
+				refObjectID:result._id,
+				message:"Ви Предизвика."
+			})	.save();
+
+		}
+
 		// for ( var index in req.body.files) {
 		// 	console.log(index);
 		// 	// var FileEnt = new File({

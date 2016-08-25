@@ -20,10 +20,10 @@ var dareSchema = new Schema({
     //The end date must be after the start date :O
     endDate: {type:Date,default:moment().add(2,'d')},
     isPublic: Boolean,
-    invitedUsers: Array,
-    watchingUsers: Array,
+    invitedUsers: [{type: Schema.Types.ObjectId,ref:'User'}],
+    watchingUsers: [{type: Schema.Types.ObjectId,ref:'User'}],
     //users who accepted the challenge
-    acceptedUsers: Array,
+    acceptedUsers: [{type: Schema.Types.ObjectId,ref:'User'}],
     //Comments about the challenge.
     comments: Array,
     
