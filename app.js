@@ -3,13 +3,14 @@ var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
-// var bodyParser = require('body-parser');
+var bodyParser = require('body-parser');
 
 //Allow remote servers to get
 var cors = require('cors');
 
 //Database
 var mongoose = require('mongoose');
+
 var mongodbServer = "mongodb://serverConnection:dareornot!mlab@ds029635.mlab.com:29635/dareornot"
 mongoose.connect(mongodbServer);
 var db = mongoose.connection;
@@ -59,7 +60,7 @@ app.use(cookieParser());
 app.use(passport.initialize());
 app.use(passport.session());
 
-var bodyParser = require('body-parser');
+
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 

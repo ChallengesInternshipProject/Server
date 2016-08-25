@@ -33,7 +33,7 @@ var dareSchema = new Schema({
     comments:{type:Number,default:100}, //TODO use differente collection
     city:{type:String,default:'Sofia'},
     category : {type:Number, default:0},
-    
+    files : [{type: Schema.Types.ObjectId,ref:'Files'}]
     //TODO limits maximum and minimum lenght of strings
 });
 

@@ -5,6 +5,7 @@ var Dare = require('../models/dares');
 var moment = require('moment')
 moment.locale('bg');
 var $q = require('q');
+var File = require("../models/files");
 
 function CalculateTimes(challenges){
 	var result =[];
@@ -44,24 +45,42 @@ router.get('/list/', function(req, res, next) {
 
 
 router.get('/', function (req, res, next) {
-  Dare.find(function (err, dare) {
+		Dare.find(function (err, dare) {
 		res.json(dare);
 	});
 });
 
 router.get('/clear', function (req, res, next) {
-  Dare.remove(function (err) {
+		Dare.remove(function (err) {
 		res.send('cleared');
 	})
 });
 
 router.post('/create', function (req, res, next) {
 	var dare = new Dare(req.body);
-	console.log(req.body);
-	// dare.save(function (err, dare) {
-	// 	res.json(dare);
-	// });
-
+	var newDare = $q.defer()
+	//Save the dare
+	dare.save(function (err, dare) {
+		newDare.resolve(dare);
+	});
+	
+	//Save the files 
+	newDare.promise.then(function(result){
+		// for ( var index in req.body.files) {
+		// 	console.log(index);
+		// 	// var FileEnt = new File({
+		// 	// 	object : "dare",
+		// 	// 	objectId :result._id,
+		// 	// 	fileString : req.body.files[index],
+		// 	// 	fileType : "img",
+		// 	// 	uploadedBy:req.body._creator
+		// 	// });
+		// 	// FileEnt.save(function(err,res){
+		// 	// 	console.log(res._id);
+		// 	// })
+		// }
+		res.json(result);
+	})
 });
 
 

@@ -9,4 +9,5 @@ var fileSchema = new Schema({
 	uploadedBy:{type: Schema.Types.ObjectId,ref:'User'},
 });
 
+var File = mongoose.model('File', fileSchema);
 module.exports = File;
