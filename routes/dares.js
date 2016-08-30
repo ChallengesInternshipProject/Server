@@ -20,17 +20,6 @@ function CalculateTimes(challenges){
 	return result
 }
 
-function createTestChallenge(userID,date){
-	var newChallenge = new Dare({
-		_creator : userID,
-		description : "Feed a stray cat",
-		startDate : new moment().add(date+2,'d').format(),
-		endDate : new moment().add(date+4,'d').format(),
-		title: "New Dare :" + new moment().add(date+2,'d').format(),
-	})
-	console.log('New CHallenge')
-	newChallenge.save();
-}
 
 router.get('/list/', function(req, res, next) {
 	//TODO add pagination and hide the user password from the json !!! possible exploit
@@ -78,7 +67,7 @@ router.post('/create', function (req, res, next) {
 				refObjectID:result._id,
 				message:"Ви Предизвика."
 			})	.save();
-
+			
 		}
 
 		// for ( var index in req.body.files) {
