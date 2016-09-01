@@ -3,11 +3,12 @@ var mongoose = require('mongoose');
 var router = express.Router();
 var Dare = require('../models/dares');
 var Notification = require('../models/notifications');
+var User = require('../models/users')
+var File = require("../models/files");
 
 var moment = require('moment')
 moment.locale('bg');
 var $q = require('q');
-var File = require("../models/files");
 
 function CalculateTimes(challenges){
 	var result =[];
@@ -26,12 +27,26 @@ router.get('/list/', function(req, res, next) {
 	Dare
 	.find(JSON.parse(req.query.data))
 	.sort({endDate : -1})
-	.populate('_creator')
+	.populate([
+		{
+			path : '_creator',
+			model : 'User'
+		},
+		{
+			path : 'pictures',
+			model :  'File'
+		},
+		{
+			path : 'invitedUsers',
+			model : 'User'
+		}
+	])
 	.exec(function (err, post) {
 		if (err) return next(err);
 		post = CalculateTimes(post);
 		res.json(post)
 	});
+	console.log('Got Here')
 });
 
 
@@ -54,7 +69,7 @@ router.post('/create', function (req, res, next) {
 	dare.save(function (err, dare) {
 		newDare.resolve(dare);
 	});
-	
+
 	//Save the files 
 	newDare.promise.then(function(result){
 		//Create Notifications for Invited Users 
@@ -70,19 +85,21 @@ router.post('/create', function (req, res, next) {
 			
 		}
 
-		// for ( var index in req.body.files) {
-		// 	console.log(index);
-		// 	// var FileEnt = new File({
-		// 	// 	object : "dare",
-		// 	// 	objectId :result._id,
-		// 	// 	fileString : req.body.files[index],
-		// 	// 	fileType : "img",
-		// 	// 	uploadedBy:req.body._creator
-		// 	// });
-		// 	// FileEnt.save(function(err,res){
-		// 	// 	console.log(res._id);
-		// 	// })
-		// }
+		for ( var index in req.body.fileData) {
+			var FileEnt = new File({
+				object : "dare",
+				objectId :result._id,
+				fileString :  req.body.fileData[index],
+				fileType : "img",
+				uploadedBy:req.body._creator
+			});
+			
+			FileEnt.save(function(err,resFile){
+				Dare.findById(result._id).exec(function(err,res){
+					res.uploadFile(resFile._id);
+				})
+			})
+		}
 		res.json(result);
 	})
 });

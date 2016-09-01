@@ -29,13 +29,17 @@ var dareSchema = new Schema({
     
     _creator:{type: Schema.Types.ObjectId,ref:'User'},
     likes:{type:Number,default:50}, //TODO - must be in different collection
-    pictures:{type:Array, default:['images/feedCat.jpg','images/feedCat2.jpg']},//TODO - create files upload 
+    pictures:[{type: Schema.Types.ObjectId,ref:'Files'}],
     comments:{type:Number,default:100}, //TODO use differente collection
     city:{type:String,default:'Sofia'},
     category : {type:Number, default:0},
-    files : [{type: Schema.Types.ObjectId,ref:'Files'}]
     //TODO limits maximum and minimum lenght of strings
 });
+
+dareSchema.methods.uploadFile=function(fileID,cb) { 
+    this.pictures.push(fileID);
+    this.save(cb);
+}
 
 var Dare = mongoose.model('Dare', dareSchema);
 
