@@ -3,6 +3,7 @@ var mongoose = require('mongoose');
 var router = express.Router();
 var User = require('../models/users');
 var bcrypt = require('bcrypt-nodejs');
+var Notification = require('../models/notifications')
 //var $q = require('q');
 
 //FOR TESTING PURPOSES !!!
@@ -27,17 +28,19 @@ router.get('/', function (req, res, next) {
 });
 router.get("/list/",function(req,res,next){
 	var ObjectID = require('mongoose').Types.ObjectId;
-
+	
 	var queryParams = {};
-	req.query.friends.forEach(function(val,key){
+	if(typeof req.query.friends == 'string') {
+		req.query.friends = [req.query.friends]
+	 }
+	for(var i in req.query.friends) {
 		if (!queryParams["_id"]) {
 			queryParams["_id"] = {
 				"$nin" : []
 			}
 		}
-		queryParams["_id"]["$nin"].push(new ObjectID(val));
-	})
-
+		queryParams["_id"]["$nin"].push(new ObjectID(req.query.friends[i]));
+	}
 	User.find(queryParams,function(err,users){
 		if (err) { return next(err);};
 		res.json(users);
@@ -80,9 +83,28 @@ router.get('/friends/:user/:status', function(req, res, next){
 })
 
 router.post('/requestFriendship/',function(req,res,next){
-	User.requestFriend(req.body.senderID,req.body.requestedID);
+	User.requestFriend(req.body.senderID,req.body.requestedID,function(err,result){
+		Notification({
+				receiver: result.friender._id,
+				sender:result.friend._id,
+				refObject:'Friendship Request',
+				message:"Ви предложи приятелство."
+			})	.save();
+	});
 	return res.json("done")
 })
 
+router.post('/acceptFriendship/',function(req,res,next){
+	User.requestFriend(req.body.senderID,req.body.requestedID,function(err,result){
+		console.log(result);
+		Notification({
+				receiver: result.friender._id,
+				sender:result.friend._id,
+				refObject:'Friendship Acceptance',
+				message:"прие  предложението ви за  приятелство."
+			})	.save();
+	});
+	return res.json("done")
+})
 
 module.exports = router;
