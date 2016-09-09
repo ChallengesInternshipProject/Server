@@ -11,7 +11,7 @@ var cors = require('cors');
 //Database
 var mongoose = require('mongoose');
 
-var mongodbServer = "mongodb://serverConnection:dareornot!mlab@ds029635.mlab.com:29635/dareornot"
+var mongodbServer = "mongodb://serverConnection:dare!not@ds021016.mlab.com:21016/dareornot2"
 mongoose.connect(mongodbServer);
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));

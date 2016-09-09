@@ -33,13 +33,19 @@ var dareSchema = new Schema({
     comments:{type:Number,default:100}, //TODO use differente collection
     city:{type:String,default:'Sofia'},
     category : {type:Number, default:0},
+    proves :[{type: Schema.Types.ObjectId,ref:'Files'}]
     //TODO limits maximum and minimum lenght of strings
 });
 
 dareSchema.methods.uploadFile=function(fileID,cb) { 
     this.pictures.push(fileID);
     this.save(cb);
-}
+};
+dareSchema.methods.uploadProve=function(proveID,cb) { 
+    this.proves.push(proveID);
+    this.save(cb);
+};
+
 
 var Dare = mongoose.model('Dare', dareSchema);
 

@@ -46,7 +46,7 @@ router.get('/list/', function(req, res, next) {
 		post = CalculateTimes(post);
 		res.json(post)
 	});
-	console.log('Got Here')
+	
 });
 
 
@@ -104,6 +104,59 @@ router.post('/create', function (req, res, next) {
 	})
 });
 
+router.get('/get/', function(req,res,next){
+	
+	Dare
+	.findById(req.query.dareID)
+	.populate([
+		{
+			path : '_creator',
+			model : 'User'
+		},
+		{
+			path : 'pictures',
+			model :  'File'
+		},
+		{
+			path : 'invitedUsers',
+			model : 'User'
+		},
+		{
+			path : 'proves',
+			model : 'File',
+			populate : {
+				path : "uploadedBy",
+				model : "User"
+			}
+		}
+	])
+	.exec(function (err, result) {
+		if (err) return next(err);
+		res.json(result)
+	});
+})
+
+router.post('/prove/', function(req,res,next){
+
+	var FileEnt = new File(req.body);
+		FileEnt.save(function(err,resFile){
+			Dare.findById(req.body.objectId).exec(function(err,resultDare){
+				resultDare.uploadProve(resFile._id);
+			
+				var notification = new Notification({
+					receiver: resultDare._creator,
+					sender:req.body.uploadedBy,
+					refObject:'dare',
+					refObjectID:resultDare._id,
+					message:"Изпълни предизвикателство",
+				
+				});
+				notification.save()
+				res.json(resFile._id)
+			})
+		})
+	
+})
 
 
 module.exports = router;

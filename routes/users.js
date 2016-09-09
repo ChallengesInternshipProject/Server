@@ -96,10 +96,11 @@ router.post('/requestFriendship/',function(req,res,next){
 
 router.post('/acceptFriendship/',function(req,res,next){
 	User.requestFriend(req.body.senderID,req.body.requestedID,function(err,result){
+		console.log(result);
 		Notification({
 				receiver: result.friender._id,
 				sender:result.friend._id,
-				refObject:'Friendship Request',
+				refObject:'Friendship Acceptance',
 				message:"прие  предложението ви за  приятелство."
 			})	.save();
 	});
