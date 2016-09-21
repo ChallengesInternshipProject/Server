@@ -22,6 +22,7 @@ router.get('/unseen/:userID',function(req,res,next){
 			$eq : false
 		}
 	})
+	.sort({createdOn: -1})
 	.exec(function (err, result) {
 		res.json(result);
 	});
@@ -60,6 +61,7 @@ router.get('/:userID',function(req,res,next){
 })
 
 router.post("/", function(req,res,next){
+	req.body.createOn = new Date();
 	var notification = new Notification(req.body);
 	notification.save(function(err,result){
 		if (err) { return next(err);};

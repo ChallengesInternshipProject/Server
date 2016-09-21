@@ -84,9 +84,10 @@ router.get('/friends/:user/:status', function(req, res, next){
 
 router.post('/requestFriendship/',function(req,res,next){
 	User.requestFriend(req.body.senderID,req.body.requestedID,function(err,result){
+		
 		Notification({
 				receiver: result.friender._id,
-				sender:result.friend._id,
+				sender:req.body.senderID,
 				refObject:'Friendship Request',
 				message:"Ви предложи приятелство."
 			})	.save();
@@ -96,10 +97,10 @@ router.post('/requestFriendship/',function(req,res,next){
 
 router.post('/acceptFriendship/',function(req,res,next){
 	User.requestFriend(req.body.senderID,req.body.requestedID,function(err,result){
-		console.log(result);
+
 		Notification({
 				receiver: result.friender._id,
-				sender:result.friend._id,
+				sender:req.body.senderID,
 				refObject:'Friendship Acceptance',
 				message:"прие  предложението ви за  приятелство."
 			})	.save();
