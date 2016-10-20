@@ -46,6 +46,11 @@ app.set('view engine', 'jade')
 
 // uncomment after placing your favicon in /public
 // app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')))
+// 
+// 
+
+app.set('port', '3000');
+console.log(app.get('port'));
 app.use(logger('dev'))
 app.use(cors())
 app.use(express.static(path.join(__dirname, 'public')))
